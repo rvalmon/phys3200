@@ -1,0 +1,135 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use('ggplot')
+import os
+
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
+cls()
+
+def menu():
+    print("CONSUMER PRODUCTS MARKET PREDICTIONS")
+    print("")
+    print("1 - Create Blank Database Starter Files")
+    print("2 - Import Files")
+    print("3 - Show Last Months Sales")
+    print("4 - Show This Months Sales")
+    print("5 - Compare Growth (run 2 first)")
+    print("6 - Predict Future Sales (run 5 first)")
+    print("7 - Publish Predictions To Web (run 5 first)")
+    print("8 - Generate Graphs for Current Prediction")
+    print("9 - EXIT PROGRAM")
+    print("")
+    pick = float(input("Select 1-9: "))
+    return pick
+
+def F2C(F):
+    return round(float((F - 32) * 5 / 9), 3)
+
+def C2F(C):
+    return round(float(C * 5 / 9 + 32), 3)
+
+def K2C(K):
+    return round(float(K-273.15), 3)
+
+def C2K(C):
+    return round(float(C+273.15), 3)
+
+def F2K(F):
+    return round(float(5*(F-32)/9+273.15), 3)
+
+def K2F(K):
+    return round(float(9*(K-273.15)/5+32), 3)
+
+def main():
+    choice = menu()
+    while choice != 9:
+        if choice == 1:
+            # Create Starter Files and save to CSV file
+            df1 = pd.DataFrame()
+            df2 = pd.DataFrame()
+            df1.to_csv('df1.csv')
+            print("Previous Month Created Successfully" + '\n'*2)
+            df2.to_csv('df2.csv')
+            print("Current Month Created Successfully" + '\n'*2)
+            print("")
+            input("Push Enter to continue...")
+            cls()
+        elif choice == 2:
+            # Import Files
+            user_cols = ['Items', 'Qty']
+            df1 = pd.read_table("F:\\GoogleDrive\\_CSULA F2018\\Physics Computing (1)\\_python\\PROJECT\\import.txt", sep="\s+", nrows=10, usecols=(0, 1), names=user_cols)
+            user_cols = ['Items', 'Qty']
+            df2 = pd.read_table("F:\\GoogleDrive\\_CSULA F2018\\Physics Computing (1)\\_python\\PROJECT\\import2.txt", sep="\s+", nrows=10, usecols=(0, 1), names=user_cols)
+            print("Import Successful" + '\n'*2)
+            input("Push Enter to continue...")
+            cls()
+        elif choice == 3:
+            # View Last Month's Sales
+            print("Last Months Sales" + '\n'*2)
+            user_cols = ['Items', 'Qty']
+            df1 = pd.read_table("F:\\GoogleDrive\\_CSULA F2018\\Physics Computing (1)\\_python\\PROJECT\\import.txt", sep="\s+", nrows=10, usecols=(0, 1), names=user_cols)
+            print(df1)
+            input("Press any key to return to Main Menu")
+            cls()
+        elif choice == 4:
+            # View This Month's Sales
+            print("This Momths Sales" + '\n'*2)
+            user_cols = ['Items', 'Qty']
+            df2 = pd.read_table("F:\\GoogleDrive\\_CSULA F2018\\Physics Computing (1)\\_python\\PROJECT\\import2.txt", sep="\s+", nrows=10, usecols=(0, 1), names=user_cols)
+            print(df2)
+            input("Press any key to return to Main Menu")
+            cls()
+        elif choice == 5:
+            # Compare Growth
+            print("Compare Growth (run 2 first)" + '\n'*2)
+
+            # Names of columns - this converts DataFrame to a List
+            itm = df1['Items'].tolist()
+
+            # Values for both months
+            qty1 = df1.iloc[:,1:].values
+            qty2 = df2.iloc[:,1:].values
+
+            #Calculate Predictions
+            new_qty = qty2 - qty1
+            #print(new_qty)
+
+            #This constructs the DataFrame for displaying
+            dataset = pd.DataFrame({'Items':itm, 'Difference':new_qty[:,0]})
+            print(dataset)
+            input("Push Enter to continue...")
+            cls()
+        elif choice == 6:
+            #Predict Future Sales
+            print("Future Sales Prediction (run 5 first)" + '\n'*2)
+            print(dataset)
+            input("Push Enter to continue...")
+            cls()
+        elif choice == 7:
+            # Publish to Web
+            print("Publish Prediction to Web (run 5 first)" + '\n'*2)
+            #Convert back to DataFrame
+            df_pub = pd.DataFrame(new_qty)
+            #df_pub = pd.DataFrame(np.array(df[['Bounce_Rate','Visitors']]))
+            
+            #convert to HTML
+            #df_pub.to_html('df_pub_html.html')
+            dataset.to_html('dataset_html.html')
+            input("Push Enter to continue...")
+            cls()
+        else:
+            #if user picks anything else other than a number 1-9
+            print("Invalid Entry - Please enter a number from 1-9")
+            print("")
+            input("Push Enter to continue...")
+            cls()
+        choice = menu()
+main()
+print("")
+print("Goodbye")
+
+
+
